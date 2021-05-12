@@ -1,0 +1,19 @@
+{
+  "name": "nodeos",
+  "version": "1.0.0",
+  "description": "An os emulated in NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JamieGrimwood/NodeOS.git"
+  },
+  "author": "Jamie_",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JamieGrimwood/NodeOS/issues"
+  },
+  "homepage": "https://github.com/JamieGrimwood/NodeOS#readme"
+}
