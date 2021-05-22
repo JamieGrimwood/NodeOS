@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/JamieGrimwood/NodeOS/issues"
   },
-  "homepage": "https://github.com/JamieGrimwood/NodeOS#readme"
+  "homepage": "https://github.com/JamieGrimwood/NodeOS#readme",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "first-run": "^2.0.0",
+    "quick.db": "^7.1.3"
+  }
 }
