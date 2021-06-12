@@ -58,7 +58,16 @@ async function checkCommand(inputCommand) {
     shutdownSequence();
   } else {
     let package = require(`./packages/${inputCommand}`)
-    console.log(package.command)
+
+    const args = message.content.slice(prefix.length).trim().split(' ');
+
+    if(!args.length) {
+      return console.log(package)
+    }
+
+    const command = args.shift().toLowerCase();
+
+    console.log(package)
   }
   commandInput();
 }

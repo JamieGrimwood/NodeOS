@@ -1,5 +1,1 @@
-const command = () => {
-    return 'Jim';
-};
-  
-exports.command = command;
+module.exports = 'Current commands: \n\n"nam" - NodeOS Addon Manager, manages all addons for NodeOS';
