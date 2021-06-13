@@ -1,4 +1,3 @@
-const db = require("quick.db");
 const firstRun = require("first-run");
 firstRun.clear();
 const chalk = require("chalk");
@@ -7,21 +6,24 @@ const log = console.log;
 const prompt = require("prompt-sync")();
 const path = require("path");
 const fs = require("fs");
+const db = require("./root/database")
 
-if (firstRun() === true) {
-  db.set("user.root", { password: "root" });
+if (firstRun() === true) async () => {
+  await db.set("user.root.username", "root");
+  await db.set("user.root.password", "root");
 }
 
 function loginCredentials() {
-  console.clear();
   const inputUsername = prompt("Login:");
   const inputPassword = prompt("Password:");
   CheckLogin(inputUsername, inputPassword);
 }
+console.clear();
 loginCredentials();
 
 async function CheckLogin(inputUsername, inputPassword) {
-  let dbPass = db.get(`user.${inputUsername}.password`);
+  let dbPass = await db.get("user." + inputUsername + ".password");
+  console.log(dbPass)
 
   if (dbPass === inputPassword) {
     db.set("currentDir", "/");
@@ -54,26 +56,40 @@ async function commandInput() {
 }
 
 async function checkCommand(inputCommand) {
-  if (inputCommand === "shutdown" || inputCommand === "exit") {
+  let params = inputCommand.split(" ") // lazy to do it the efficient way
+  let cmd = params.shift();
+
+  if (cmd === "shutdown" || cmd === "exit") {
     shutdownSequence();
   } else {
-    let package = require(`./packages/${inputCommand}`)
+    if (fs.existsSync(`./addons/${cmd}.js`)) {
+      let package = require(`./addons/${cmd}`);
 
-    const args = message.content.slice(prefix.length).trim().split(' ');
+      if (!params.length) {
+        console.log(package.no_params);
+      } else {
+        if (package[params[0]]) {
+          if (typeof package[params[0]] == "string") {
+            console.log(package[params[0]]);
+          } else {
+            package[params.shift()](params);
+          };
+        } else {
+          console.log(package.invalid_parameters || package.no_params);
+        }
+      }
 
-    if(!args.length) {
-      return console.log(package)
+    } else {
+      console.log(chalk.red("Invalid command. Please type \"help\" for a list of commands."))
     }
-
-    const command = args.shift().toLowerCase();
-
-    console.log(package)
+    commandInput();
   }
-  commandInput();
 }
 
 async function shutdownSequence() {
   console.clear();
   console.log("Stopping process");
+  console.log("Disconecting from the database")
+  db.close();
   process.exit();
 }
