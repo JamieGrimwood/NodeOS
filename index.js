@@ -93,3 +93,7 @@ async function shutdownSequence() {
   db.close();
   process.exit();
 }
+
+process.on('SIGINT', function() {
+  shutdownSequence()
+});
