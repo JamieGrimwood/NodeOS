@@ -1,4 +1,9 @@
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./root/database.sqlite');
+const db = require('better-sqlite3')('database.db');
 
-module.exports = db;
+(async () => {
+    const row = await db.exec(`CREATE TABLE IF NOT EXISTS users('username' varchar PRIMARY KEY, 'password' varchar );`);
+    console.log(row);
+
+    const tables = await db.exec(`SELECT * FROM users;`)
+    console.log(tables)
+})();
